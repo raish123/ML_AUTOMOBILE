@@ -31,9 +31,9 @@ setup(
     long_description=open('README.md').read(),
     author="Raees Azam Shaikh",
     author_email='shaikhraishazam@gmail.com',
-    #creating an object of find_packages class is powerful class will help to install all the library used in this project
-    packages=get_requirements('requirements.txt')
-
+    url='https://github.com/raish123/ML_AUTOMOBILE/' ,# use the URL to the github repo
+    packages= find_packages(),  #creating an object of find_packages class is powerful class will help to install all the library used in this project
+    install_requires = get_requirements('requirements.txt')
 
 )
 
