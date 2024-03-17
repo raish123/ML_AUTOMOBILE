@@ -1,0 +1,1 @@
+#means reading the data from different source known as data ingestion

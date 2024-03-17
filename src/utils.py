@@ -1,0 +1,2 @@
+#these file we will used to write the code and provide the functionality in comman way to used by the application
+#generally we will used this file to read the data from database or to push the model to aws or azure service

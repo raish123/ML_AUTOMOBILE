@@ -1,0 +1,1 @@
+#in this file we r writing the code for predicting the model and these file will trigger component folder for predicting purpose

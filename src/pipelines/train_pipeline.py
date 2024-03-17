@@ -1,0 +1,1 @@
+#in this file we r writing the code for training the model and these file will trigger component folder for taining purpose
