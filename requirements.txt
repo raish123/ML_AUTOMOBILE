@@ -6,4 +6,5 @@ opencv-python
 imblearn
 xgboost
 Flask
--e .
+seaborn
+#-e .
