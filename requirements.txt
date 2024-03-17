@@ -1,7 +1,9 @@
-numpy 
 pandas
-sklearn
+numpy
 matplotlib
 scikit-learn
 opencv-python
+imblearn
+xgboost
+Flask
 -e .
