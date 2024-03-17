@@ -1,5 +1,5 @@
 #this setup.py file we used to create the setup of project (all the information of project present in it)
-#were all the details present in this project futhur these file we can used as package  for other projects
+#were all the details present in this project futhur these file we can used as package  for other projectss
 
 #importing all the important library to create setup file
 from setuptools import setup,find_packages
