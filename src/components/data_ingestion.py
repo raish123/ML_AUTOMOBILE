@@ -77,6 +77,6 @@ class DataIngestion():
 
 #checking the data ingestion file
 
-if __name__ == '__main__':
-    obj = DataIngestion()
-    obj.initiate_data_ingestion()
+# if __name__ == '__main__':
+#     obj = DataIngestion()
+#     obj.initiate_data_ingestion()
