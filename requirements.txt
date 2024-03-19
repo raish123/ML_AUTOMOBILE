@@ -7,4 +7,5 @@ imblearn
 xgboost
 Flask
 seaborn
+dill
 #-e .
