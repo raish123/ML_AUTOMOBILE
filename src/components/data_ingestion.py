@@ -1,69 +1,67 @@
-#means reading the data from different source known as data ingestion
-import src
-import pandas as pd
+#In data ingestion we perform 3 Action in it 
+#1)data ingestion meaning reading the data from different source(can be database or cloud service)
+#2)splitting the data into 80:20 ratio(splitting code we can write into utils file also if required)
+#3) storing those (train_set and test_set and raw_set)data into specific folder(artifact)
+
+#importing all the important libraries which is used during data ingestion!!!
+import pandas as pd #this library we used to read the dataset
+from sklearn.model_selection import train_test_split #these library we used  for splitting the data into train and test set.
+import os,sys #os module we used to create directory or path where as 
+#sys module will have all details of error in it these will help me to decode the error in logs file
+#importing exception and logger modules in these file
 from src.logger import logging
 from src.exception import CustomException
-import os,sys
+import numpy as np
+from dataclasses import dataclass 
+#dataclass is a built in class of dataclasses module we used to 
+#initialize directly class variable/attributes path and folder of file!!
 
 
-from sklearn.model_selection import train_test_split   #we r getting train_set,test_set
-from dataclasses import dataclass
-
-#dataclass is a built in class of dataclasses module  help us directly to
-#define the class variable/attributes by using @dataclass  decorato
-
-
-#after reading the data where we have to save the raw_data 
-#or after splitting the data where we have to save train_set/test_set data 
-#so we have to mentioned the specific folder to stored the data!!
-
-
-
-#creating dataingestionconfig class where all the path are define in these class using dataclasses module!!!
-
-@dataclass
+#1)first creating class for storing (train_set and test_set and raw_set)data into specific folder(artifact)
+@dataclass  #this line indicate these class variable 
 class DataIngestionConfig():
-    #defining class variable or class attribute directly using dataclasses module
-    train_data_path = os.path.join('artifact','train.csv')
-    test_data_path = os.path.join('artifact','test.csv')
-    raw_data_path = os.path.join('artifact','raw.csv')
+    #initializing the train,test,raw data path
+    train_data_path = os.path.join('artifacts','train.csv')
+    test_data_path = os.path.join('artifacts','test.csv')
+    raw_data_path = os.path.join('artifacts','raw.csv')
 
 
 
-#now creating another class for performing the dataingestion (means reading data from source,
-#saving those raw data...then splitting the raw data into train_set and test_set)
-
+#2)data ingestion meaning reading the data from different source(local machine orcan be database or cloud service)
+#so creating class for reading the data and  splitting the data into 80:20 ratio and storing the data into 
+#DataIngestionConfig initialize path
+    
 class DataIngestion():
-    #now all the paths are define DataIngestionConfig class we have to take access in  this class
-    #so creating constructor method 
+    #creating constructor method/object of DataIngestion class will have all details of the initialize data_path in it
     def __init__(self):
-        #here we r calling the DataIngestionConfig class all attibutes storing into instance variable/attributes
-        self.ingestion_config = DataIngestionConfig()
+        self.ingestion_config = DataIngestionConfig() 
+        #self.ingestion_config is class variable which hold test,train,raw_data_path detail in it
 
+    #now we will create method  for reading the data from csv file  and storing the data into specific folder
     def initiate_data_ingestion(self):
-        logging.info('Enter the data ingestion method or component')
+        logging.info('Data Ingestion initiated Started')
         try:
-            #here we r reading the raw data from source present in 
-            df = pd.read_csv('notebook\cleaned_automobile.csv')  #in industry only we want to take care of this line only line will getting change remaining all same
+            #reading the data from csv file
+            df = pd.read_csv('notebook\Automobile_data.csv')
+            logging.info('Data Read successfully in DataFrame object')
 
-            logging.info('Csv data successfully readed to df object')
+            #now creating artifact folder 
+            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True) 
+            logging.info('artifact Folder Successfully Created')
 
-            #now creating artifact folder and storing train_data_path in it
-            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
-
-            #saving the raw data into artifact specific folder
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
 
-            #splitting the dataset into 80:20  ratio of train_set and test_set respectively
-            logging.info('Train test split of data initiated')
-            train_set,test_set = train_test_split(df,test_size=0.2,random_state=1)
+            #splitting the dataset into train and test set with 80:20 ratio
+            train_df,test_df = train_test_split(df,test_size=0.2,random_state=42)
 
-            #again saving the train set and test test to artifact folder
-            df.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
-            df.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
+            logging.info('saving train and test_df into artifact folder by using self.ingestion_config train&test')
+            #storing the train and test set into respective files
+            train_df.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
+            test_df.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
 
             logging.info('Data Ingestion is done Successfully!')
 
+            
             return(
                 self.ingestion_config.train_data_path,
                 self.ingestion_config.test_data_path,
@@ -73,10 +71,10 @@ class DataIngestion():
 
         except Exception as e:
             raise CustomException(e,sys)
-        
 
-#checking the data ingestion file
+if __name__ == '__main__':
+    di = DataIngestion()
+    di.initiate_data_ingestion()
+    
 
-# if __name__ == '__main__':
-#     obj = DataIngestion()
-#     obj.initiate_data_ingestion()
+
